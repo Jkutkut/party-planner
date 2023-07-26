@@ -1,11 +1,13 @@
+import CalendarDayModel from "../../model/CalendarDayModel";
+
 interface Props {
-    day: string;
+    day: CalendarDayModel;
 };
 
 const CalendarDay = ({ day }: Props) => {
     return <>
         <hr />
-        <h2>{day}</h2>
+        <h2>{day.toString()}</h2>
         <p>Event 1</p>
         <p>Event 2</p>
         <p>Event 3</p>

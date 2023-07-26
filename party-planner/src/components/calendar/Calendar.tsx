@@ -1,20 +1,22 @@
 import { useEffect, useState } from 'react'
 import CalendarDay from './CalendarDay';
+import CalendarModel from '../../model/CalendarModel';
+import DayModel from '../../model/CalendarDayModel';
 
 interface Props {
-
+    calendar: CalendarModel;
 };
 
-const Calendar = ({}: Props) => {
+const Calendar = ({calendar}: Props) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [days, setDays] = useState<string[]>([]);
+    const [days, setDays] = useState<DayModel[]>([]);
 
     const addWeek: () => void = () => {
         setIsLoading(true);
-        setTimeout(() => {
-            setDays(addWeekManual(days));
+        calendar.loadDays().then((calendar) => {
+            setDays(calendar.getDays());
             setIsLoading(false);
-        }, 1000); // TODO debug
+        });
     };
 
     const handleScroll = () => {
@@ -39,15 +41,6 @@ const Calendar = ({}: Props) => {
         )}
         {isLoading && <p>Loading...</p>}
     </>;
-};
-
-const addWeekManual: (days: string[]) => string[] = (days) => {
-    const week = days.length / 7 + 1;
-    const newWeek: string[] = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-    newWeek.forEach((day, index) => {
-        newWeek[index] = `${day} ${week}`;
-    });
-    return [...days, ...newWeek];
 };
 
 export default Calendar;
