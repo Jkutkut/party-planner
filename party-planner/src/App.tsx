@@ -1,10 +1,10 @@
-import { useState } from 'react'
+import Calendar from './components/calendar/Calendar'
 
 function App() {
 
   return (
     <>
-      <h1>Party planner</h1>
+      <Calendar />
     </>
   )
 }
