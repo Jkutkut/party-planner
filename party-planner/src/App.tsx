@@ -1,19 +1,29 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Calendar from './components/calendar/Calendar'
 import CalendarModel from './model/CalendarModel'
+import Session from './model/session/Session';
+import SessionHandler from './model/session/SessionHandler';
+import SessionCreation from './components/session/SessionCreation';
 
 function App() {
-  const [calendar, setCalendar] = useState<CalendarModel | undefined>();
+  const [sessionHandler] = useState<SessionHandler>(SessionHandler.getInstance());
+  const [session, setSession] = useState<Session | null>(null);
 
-  if (!calendar) {
-    const today = new Date();
-    setCalendar(new CalendarModel(today));
-    return <p>Loading...</p>;
+  useEffect(() => {
+    setSession(sessionHandler.getCurrentSession());
+  }, []);
+
+  if (!session) {
+    return <SessionCreation
+      onCreate={(session) => {
+        setSession(session);
+      }}
+    />;
   }
 
   return (
     <>
-      <Calendar calendar={calendar}/>
+      <Calendar calendar={session.getCalendar()}/>
     </>
   )
 }

@@ -30,8 +30,9 @@ class CalendarModel {
 
 const mondayOf = (date: Date): Date => {
     const day = date.getDay();
-    const diff = date.getDate() - day + (day === 0 ? -6 : 1);
-    return new Date(date.setDate(diff));
+    const dayDiff = date.getDate() - day + (day === 0 ? -6 : 1);
+    date.setDate(dayDiff);
+    return new Date(date);
 }
 
 export default CalendarModel;

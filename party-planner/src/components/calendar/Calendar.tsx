@@ -22,7 +22,7 @@ const Calendar = ({calendar}: Props) => {
     const handleScroll = () => {
         if (isLoading) return;
         if (window.innerHeight + document.documentElement.scrollTop <
-            document.documentElement.offsetHeight - 200)
+            document.documentElement.offsetHeight - 300)
             return;
         addWeek();
     };
