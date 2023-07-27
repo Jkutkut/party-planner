@@ -14,11 +14,13 @@ class CalendarModel {
         const oneDay = 24 * 60 * 60 * 1000;
 
         let newDate: Date;
+        const newDays: DayModel[] = []; 
         for (let i = 0; i < 7; i++) {
             newDate = new Date(this.startDate.getTime() + (i + offset) * oneDay);
-            this.days.push(new DayModel(newDate));
+            newDays.push(new DayModel(newDate));
         }
-        return new Promise((resolve) => setTimeout(() => resolve(this), 1000)); // TODO
+        this.days = [...this.days, ...newDays];
+        return new Promise((resolve) => resolve(this));
     }
 
     public getDays(): DayModel[] {
