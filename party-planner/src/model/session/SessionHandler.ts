@@ -22,8 +22,31 @@ class SessionHandler {
         return this.sessions;
     }
 
-    public getCurrentSession(): Session | null {
+    public getCurrentSession(): Session {
+        if (!this.currentSession) {
+            throw new Error("SessionHandler.getCurrentSession: no current session");
+        }
         return this.currentSession;
+    }
+
+    public setCurrentSession(sessionName: string): void {
+        for (let i = 0; i < this.sessions.length; i++) {
+            if (this.sessions[i].getName() === sessionName) {
+                this.setCurrentSessionObj(this.sessions[i]);
+                return;
+            }
+        }
+        console.error("SessionHandler.setCurrentSession: session not found");
+    }
+
+    private setCurrentSessionObj(session: Session): void {
+        this.currentSession = session;
+        this.saveSessions();
+    }
+
+    public stopCurrentSession(): void {
+        this.currentSession = null;
+        this.saveSessions();
     }
 
     public createSession(sessionName: string, startDate: Date): Session | null {
@@ -34,8 +57,7 @@ class SessionHandler {
         }
         const newSession = new Session(sessionName, startDate);
         this.sessions.push(newSession);
-        this.currentSession = newSession;
-        this.saveSessions();
+        this.setCurrentSessionObj(newSession);
         return newSession;
     }
 
