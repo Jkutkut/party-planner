@@ -1,13 +1,13 @@
-class User {
+class UserModel {
     private name: string;
 
     constructor(name: string) {
         this.name = name;
     }
 
-    public static fromJSON(json: any): User {
+    public static fromJSON(json: any): UserModel {
         const { name } = json;
-        return new User(name);
+        return new UserModel(name);
     }
 
     public getName(): string {
@@ -15,4 +15,4 @@ class User {
     }
 }
 
-export default User;
+export default UserModel;

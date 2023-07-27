@@ -15,7 +15,7 @@ const SessionCreation = ({setSession}: Props) => {
         const dateInput = document.getElementById('sessionDate') as HTMLInputElement;
 
         const sessionName = nameInput.value.trim();
-        const sessionDate = new Date(dateInput.value);
+        const sessionDate = new Date(dateInput.value); // TODO handle
 
         if (sessionName.length === 0) {
             alert('Session name cannot be empty!');

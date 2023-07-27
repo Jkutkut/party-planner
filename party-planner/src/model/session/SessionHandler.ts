@@ -22,10 +22,7 @@ class SessionHandler {
         return this.sessions;
     }
 
-    public getCurrentSession(): Session {
-        if (!this.currentSession) {
-            throw new Error("SessionHandler.getCurrentSession: no current session");
-        }
+    public getCurrentSession(): Session | null {
         return this.currentSession;
     }
 

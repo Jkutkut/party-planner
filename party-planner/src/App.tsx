@@ -2,50 +2,40 @@ import { useState } from 'react';
 import Calendar from './components/calendar/Calendar'
 import SessionHandler from './model/session/SessionHandler';
 import SessionCreation from './components/session/SessionCreation';
-
-enum State {
-  SessionPicker,
-  Calendar
-}
+import UserModel from './model/user/UserModel';
 
 function App() {
   const [sessionHandler] = useState<SessionHandler>(SessionHandler.getInstance());
-  const [state, setState] = useState<State>(State.SessionPicker);
+  const [user, setUser] = useState<number>(0);
+  const [session, setSession] = useState(sessionHandler.getCurrentSession());
 
-  const [user, setUser] = useState<number>(-1);
-  const [users, setUsers] = useState<string[]>([]);
-
-  const session = sessionHandler.getCurrentSession();
-  if (session && state === State.SessionPicker) {
-    setState(State.Calendar);
-    return <></>;
-  }
-  if (state === State.SessionPicker) {
+  if (!session) {
     return <SessionCreation
       setSession={(session) => {
         sessionHandler.setCurrentSession(session.getName());
-        setState(State.Calendar);
+        setSession(session);
       }}
     />;
   }
+  const users = session.getUsers();
 
   const selectSession = () => {
     sessionHandler.stopCurrentSession();
-    setState(State.SessionPicker);
+    setSession(null);
   };
 
   const addUser = () => {
     const userInput = document.getElementById('userInput') as HTMLInputElement;
-    const user = userInput.value.trim();
-    if (user.length === 0) {
+    const username = userInput.value.trim();
+    if (username.length === 0) {
       alert('User name cannot be empty!');
       return; // TODO handle this better
     }
-    if (users.includes(user)) {
+    if (users.find(user => user.getName() === username)) {
       alert('User already exists!');
       return; // TODO handle this better
     }
-    setUsers([...users, user]);
+    session.getUsers().push(new UserModel(username));
     userInput.value = '';
     userInput.focus();
     setUser(users.length);
@@ -55,10 +45,12 @@ function App() {
     <>
       <button onClick={selectSession}>Session selector</button>
       <div style={{float: 'right'}}>
-        <select onChange={(e) => setUser(parseInt(e.target.value))} value={user}>
+        <h5>DEBUG: {user}</h5>
+        {/* TODO fix select bug */}
+        <select id="userSelector" onChange={(e) => setUser(parseInt(e.target.value))} value={user}>
           <option value={-1}>Select user</option>
           {users.map((user, index) => {
-            return <option key={index} value={index}>{user}</option>
+            return <option key={index} value={index}>{user.getName()}</option>
           })}
         </select>
         <input id='userInput' type="text" placeholder="Add user" 
