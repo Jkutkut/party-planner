@@ -9,6 +9,16 @@ class Session {
         this.calendar = new CalendarModel(startDate);
     }
 
+    public static fromJSON(json: any): Session {
+        const { name, calendar } = json;
+
+        const calendarModel = CalendarModel.fromJSON(calendar);
+
+        const session = new Session(name, calendarModel.getStartDate());
+        session.calendar = calendarModel;
+        return session;
+    }
+
     public getName(): string {
         return this.name;
     }

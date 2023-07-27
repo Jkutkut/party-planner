@@ -9,6 +9,17 @@ class CalendarModel {
         this.days = [];
     }
 
+    public static fromJSON(json: any): CalendarModel {
+        const { startDate, days } = json;
+
+        const date = new Date(startDate);
+        const daysModel = days.map((day: any) => DayModel.fromJSON(day));
+
+        const calendar = new CalendarModel(date);
+        calendar.days = daysModel;
+        return calendar;
+    }
+
     public async loadDays(): Promise<CalendarModel> {
         const offset = this.days.length;
         const oneDay = 24 * 60 * 60 * 1000;
@@ -25,6 +36,10 @@ class CalendarModel {
 
     public getDays(): DayModel[] {
         return this.days;
+    }
+
+    public getStartDate(): Date {
+        return this.startDate;
     }
 }
 

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import Calendar from './components/calendar/Calendar'
-import CalendarModel from './model/CalendarModel'
 import Session from './model/session/Session';
 import SessionHandler from './model/session/SessionHandler';
 import SessionCreation from './components/session/SessionCreation';
@@ -20,6 +19,8 @@ function App() {
       }}
     />;
   }
+
+  console.log(SessionHandler.getInstance());
 
   return (
     <>

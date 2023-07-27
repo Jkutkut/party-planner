@@ -7,6 +7,11 @@ class CalendarDayModel {
         this.date = date;
     }
 
+    public static fromJSON(json: any): CalendarDayModel {
+        const { date } = json;
+        return new CalendarDayModel(new Date(date));
+    }
+
     protected setDate(date: Date): void {
         this.date = date;
     }
