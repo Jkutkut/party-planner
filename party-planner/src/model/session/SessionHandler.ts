@@ -18,6 +18,10 @@ class SessionHandler {
         return SessionHandler.instance;
     }
 
+    public getSessions(): Session[] {
+        return this.sessions;
+    }
+
     public getCurrentSession(): Session | null {
         return this.currentSession;
     }
@@ -35,7 +39,13 @@ class SessionHandler {
         return newSession;
     }
 
+    public deleteSession(sessionName: string): void {
+        this.sessions = this.sessions.filter((session) => session.getName() !== sessionName);
+        this.saveSessions();
+    }
+
     // -----------------------------------
+
     protected loadSessions(): void {
         const currentSession = localStorage.getItem("currentSession");
         if (currentSession) {

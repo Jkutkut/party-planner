@@ -4,18 +4,25 @@ import Session from './model/session/Session';
 import SessionHandler from './model/session/SessionHandler';
 import SessionCreation from './components/session/SessionCreation';
 
+enum State {
+  SessionPicker,
+  Calendar
+}
+
 function App() {
   const [sessionHandler] = useState<SessionHandler>(SessionHandler.getInstance());
   const [session, setSession] = useState<Session | null>(null);
+  const [state, setState] = useState<State>(State.SessionPicker);
 
   useEffect(() => {
     setSession(sessionHandler.getCurrentSession());
   }, []);
 
-  if (!session) {
+  if (!session || state === State.SessionPicker) {
     return <SessionCreation
-      onCreate={(session) => {
+      setSession={(session) => {
         setSession(session);
+        setState(State.Calendar);
       }}
     />;
   }
@@ -24,6 +31,7 @@ function App() {
 
   return (
     <>
+      <button onClick={() => setState(State.SessionPicker)}>Session selector</button>
       <Calendar calendar={session.getCalendar()}/>
     </>
   )
