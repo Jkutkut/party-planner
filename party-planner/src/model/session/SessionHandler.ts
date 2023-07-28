@@ -1,11 +1,13 @@
+import Model from "../Model";
 import Session from "./Session";
 
-class SessionHandler {
+class SessionHandler extends Model {
     private static instance: SessionHandler;
     private sessions: Session[];
     private currentSession: Session | null;
 
     private constructor() {
+        super();
         this.sessions = [];
         this.currentSession = null;
         this.loadSessions();
@@ -18,6 +20,8 @@ class SessionHandler {
         return SessionHandler.instance;
     }
 
+    // -----------------------------------
+
     public getSessions(): Session[] {
         return this.sessions;
     }
@@ -27,13 +31,14 @@ class SessionHandler {
     }
 
     public setCurrentSession(sessionName: string): void {
+        this.debug("Setting current session to", sessionName);
         for (let i = 0; i < this.sessions.length; i++) {
             if (this.sessions[i].getName() === sessionName) {
                 this.setCurrentSessionObj(this.sessions[i]);
                 return;
             }
         }
-        console.error("SessionHandler.setCurrentSession: session not found");
+        this.error("session not found");
     }
 
     private setCurrentSessionObj(session: Session): void {
@@ -66,32 +71,42 @@ class SessionHandler {
     // -----------------------------------
 
     protected loadSessions(): void {
+        this.debug("Loading sessions from localStorage");
         const currentSession = localStorage.getItem("currentSession");
         if (currentSession) {
+            this.debug("Loading current session from localStorage");
             try {
                 this.currentSession = Session.fromJSON(JSON.parse(currentSession));
             }
             catch (e) {
-                console.warn("Failed to load current session from localStorage\n", e);
-                console.info(JSON.parse(currentSession));
+                this.error(
+                    "Failed to load current session from localStorage\n",
+                    e, "\n", JSON.parse(currentSession)
+                );
                 localStorage.removeItem("currentSession");
             }
         }
         const sessions = localStorage.getItem("sessions");
         if (sessions) {
+            this.debug("Loading sessions from localStorage");
             try {
                 this.sessions = JSON.parse(sessions).map((session: any) => Session.fromJSON(session));
-            } catch (error) {
-                console.warn("Failed to load sessions from localStorage\n", error);
-                console.info(JSON.parse(sessions));
+            } catch (e) {
+                this.error(
+                    "Failed to load sessions from localStorage\n",
+                    e, "\n", JSON.parse(sessions)
+                );
                 localStorage.removeItem("sessions");
             }
         }
+        this.debug("Loaded sessions from localStorage");
     }
 
-    protected saveSessions(): void {
+    public saveSessions(): void {
+        this.debug("Saving sessions to localStorage");
         localStorage.setItem("currentSession", JSON.stringify(this.currentSession));
         localStorage.setItem("sessions", JSON.stringify(this.sessions));
+        this.debug("Saved sessions to localStorage");
     }
 }
 

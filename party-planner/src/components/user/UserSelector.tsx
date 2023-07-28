@@ -22,11 +22,11 @@ const UserSelector = ({session, userIdx, setUserIdx}: Props) => {
             alert('User already exists!');
             return; // TODO handle this better
         }
-        userInput.defaultValue = '';
+        userInput.value = '';
         userInput.focus();
 
         const user = new UserModel(username);
-        session.getUsers().push(user);
+        session.addUser(user);
         setUserIdx(session.getUsers().length - 1);
     }
 
