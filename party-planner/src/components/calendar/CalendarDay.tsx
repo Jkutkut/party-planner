@@ -1,4 +1,4 @@
-import CalendarDayModel from "../../model/CalendarDayModel";
+import CalendarDayModel from "../../model/calendar/CalendarDayModel";
 
 interface Props {
     day: CalendarDayModel;

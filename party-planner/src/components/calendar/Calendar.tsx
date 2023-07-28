@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import CalendarDay from './CalendarDay';
-import CalendarModel from '../../model/CalendarModel';
-import DayModel from '../../model/CalendarDayModel';
+import CalendarModel from '../../model/calendar/CalendarModel';
+import DayModel from '../../model/calendar/CalendarDayModel';
 
 interface Props {
     calendar: CalendarModel;

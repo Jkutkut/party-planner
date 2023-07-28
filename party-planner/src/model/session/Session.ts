@@ -1,5 +1,5 @@
 import Model from "../Model";
-import CalendarModel from "../CalendarModel";
+import CalendarModel from "../calendar/CalendarModel";
 import UserModel from "../user/UserModel";
 import SessionHandler from "./SessionHandler";
 

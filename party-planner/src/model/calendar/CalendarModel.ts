@@ -1,22 +1,22 @@
 import DayModel from "./CalendarDayModel";
+import Model from "../Model";
 
-class CalendarModel {
+class CalendarModel extends Model {
     private startDate: Date;
     private days: DayModel[];
 
     constructor(startDate: Date) {
+        super();
         this.startDate = mondayOf(startDate);
         this.days = [];
     }
 
     public static fromJSON(json: any): CalendarModel {
-        const { startDate, days } = json;
-
+        this.debug("Loading calendar from JSON", json);
+        const { startDate } = json;
         const date = new Date(startDate);
-        const daysModel = days.map((day: any) => DayModel.fromJSON(day));
-
         const calendar = new CalendarModel(date);
-        calendar.days = daysModel;
+        this.debug("Calendar object created", calendar);
         return calendar;
     }
 
@@ -41,7 +41,19 @@ class CalendarModel {
     public getStartDate(): Date {
         return this.startDate;
     }
-}
+
+    // -----------------------------
+
+    public toJSON(): any {
+        let result: any = {};
+        for (let x in this) {
+            if (x === "days")
+                continue;
+            result[x] = this[x];
+        }
+        return result;
+    }
+};
 
 const mondayOf = (date: Date): Date => {
     const day = date.getDay();
