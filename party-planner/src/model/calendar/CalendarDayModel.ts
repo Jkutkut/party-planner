@@ -35,7 +35,7 @@ class CalendarDayModel {
         this.date = date;
     }
 
-    protected getDate(): Date {
+    public getDate(): Date {
         return this.date;
     }
 

@@ -12,8 +12,11 @@ const CalendarDay = ({ day, session}: Props) => {
     const [dayUsers, setDayUsers] = useState<number[]>(day.getUsers());
 
     const handleClick = () => {
-        console.debug('Clicked on day ' + day.toString());
         const currentUser = session.getCurrentUserIdx();
+        if (currentUser < 0) {
+            return;
+        }
+        console.debug('Clicked on day ' + day.toString());
         day.toggleUser(currentUser);
         setDayUsers([...day.getUsers()]);
     };
@@ -24,9 +27,12 @@ const CalendarDay = ({ day, session}: Props) => {
         {dayUsers.length === 0 &&
             <p>No users</p> ||
             <ul>
-                {dayUsers.map((userIdx, index) => 
-                    <li key={index}>{users[userIdx].getName()}</li>
-                )}
+                {dayUsers.map((userIdx, index) => {
+                    if (userIdx >= 0) {
+                        return <li key={index}>{users[userIdx].getName()}</li>;
+                    }
+                    return null;
+                })}
             </ul>
         }
         <hr />
