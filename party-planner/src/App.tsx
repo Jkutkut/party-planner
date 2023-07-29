@@ -48,8 +48,7 @@ function App() {
           setUserIdx={changeUserIdx}
         />
       </div>
-      <p>User: {userIdx} -- {userIdx >= 0 && session.getUsers()[userIdx].getName() || "None"}</p>
-      <Calendar calendar={session.getCalendar()}/>
+      <Calendar session={session}/>
     </>
   )
 }

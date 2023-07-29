@@ -1,15 +1,17 @@
 import { useEffect, useState } from 'react'
 import CalendarDay from './CalendarDay';
-import CalendarModel from '../../model/calendar/CalendarModel';
 import DayModel from '../../model/calendar/CalendarDayModel';
+import Session from '../../model/session/Session';
 
 interface Props {
-    calendar: CalendarModel;
+    session: Session;
 };
 
-const Calendar = ({calendar}: Props) => {
+const Calendar = ({session}: Props) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [days, setDays] = useState<DayModel[]>([]);
+
+    const calendar = session.getCalendar();
 
     const addWeek: () => void = () => {
         setIsLoading(true);
@@ -37,7 +39,7 @@ const Calendar = ({calendar}: Props) => {
     return <>
         <h1>Calendar</h1>
         {days.map((day, index) => 
-            <CalendarDay key={index} day={day} />
+            <CalendarDay key={index} day={day} session={session} />
         )}
         {isLoading && <p>Loading...</p>}
     </>;
