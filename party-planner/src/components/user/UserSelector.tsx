@@ -5,7 +5,7 @@ interface Props {
     session: Session;
     userIdx: number;
     setUserIdx: (user: number) => void;
-};
+}
 
 const UserSelector = ({session, userIdx, setUserIdx}: Props) => {
     const users = session.getUsers();

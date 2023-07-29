@@ -5,7 +5,7 @@ import Session from '../../model/session/Session';
 
 interface Props {
     session: Session;
-};
+}
 
 const Calendar = ({session}: Props) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);

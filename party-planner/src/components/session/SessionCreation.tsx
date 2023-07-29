@@ -4,7 +4,7 @@ import SessionHandler from "../../model/session/SessionHandler";
 
 interface Props {
     setSession: (session: Session) => void;
-};
+}
 
 const SessionCreation = ({setSession}: Props) => {
     const [sessionHandler] = useState<SessionHandler>(SessionHandler.getInstance());

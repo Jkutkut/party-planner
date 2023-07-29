@@ -5,7 +5,7 @@ import Session from "../../model/session/Session";
 interface Props {
     day: CalendarDayModel;
     session: Session;
-};
+}
 
 const CalendarDay = ({ day, session}: Props) => {
     const users = session.getUsers();

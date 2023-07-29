@@ -22,7 +22,7 @@ class CalendarModel extends Model {
 
         if (days.length > 0) {
             this.debug("Importing days from JSON", days);
-            let realDays: CalendarDayModel[] = [];
+            const realDays: CalendarDayModel[] = [];
             let currentDay: Date = date;
             let i = 0;
             while (i < days.length) {
@@ -74,8 +74,8 @@ class CalendarModel extends Model {
     // -----------------------------
 
     public toJSON(): any {
-        let result: any = {};
-        for (let x in this) {
+        const result: any = {};
+        for (const x in this) {
             if (x === "days") {
                 result.days = this.days.filter((day: CalendarDayModel) => day.getUsers().length > 0);
                 continue;
