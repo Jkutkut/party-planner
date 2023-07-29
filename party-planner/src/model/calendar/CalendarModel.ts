@@ -55,7 +55,7 @@ class CalendarModel extends Model {
 
         let newDate: Date;
         const newDays: CalendarDayModel[] = []; 
-        for (let i = 0; i < 7; i++) {
+        for (let i = 0; i < 15; i++) {
             newDate = new Date(this.startDate.getTime() + (i + offset) * CalendarModel.ONE_DAY);
             newDays.push(new CalendarDayModel(newDate));
         }
