@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
-import Session from "../../model/session/Session";
+import SessionModel from "../../model/session/Session";
 import SessionHandler from "../../model/session/SessionHandler";
+import Session from "./Session";
 
 interface Props {
-    setSession: (session: Session) => void;
+    setSession: (session: SessionModel) => void;
 }
 
 const SessionCreation = ({setSession}: Props) => {
     const [sessionHandler] = useState<SessionHandler>(SessionHandler.getInstance());
-    const [availableSessions, setAvailableSessions] = useState<Session[]>([]);
+    const [availableSessions, setAvailableSessions] = useState<SessionModel[]>([]);
 
     const createSession = () => {
         const nameInput = document.getElementById('sessionName') as HTMLInputElement;
@@ -23,7 +24,7 @@ const SessionCreation = ({setSession}: Props) => {
         }
 
         const sessionHandler = SessionHandler.getInstance();
-        const session: Session | null = sessionHandler.createSession(sessionName, sessionDate);
+        const session: SessionModel | null = sessionHandler.createSession(sessionName, sessionDate);
         if (!session) {
             alert('Session already exists!');
             return; // TODO: Handle this better
@@ -43,16 +44,14 @@ const SessionCreation = ({setSession}: Props) => {
     return <>
         {availableSessions.length > 0 && <>
             <h2>Existing Sessions</h2>
-            {availableSessions.map((session, index) => {
-                return <div key={index}>
-                    <button onClick={() => setSession(session)}>
-                        {session.getName()}
-                    </button>
-                    <button onClick={() => deleteSession(session.getName())}>
-                        Delete
-                    </button>
-                </div>;
-            })}
+            <ul className="list-group">
+                {availableSessions.map((session, index) =>
+                    <Session key={index}
+                        session={session}
+                        setSession={setSession} deleteSession={deleteSession}
+                    />
+                )}
+            </ul>
         </>}
         <h1>Create new</h1>
         <input id="sessionName" type="text" placeholder="Session Name" />
