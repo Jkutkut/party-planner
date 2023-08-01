@@ -36,13 +36,13 @@ const Calendar = ({session}: Props) => {
 
     useEffect(() => addWeek(), []);
 
-    return <>
+    return <div style={{overflow: 'hidden'}}>
         <h1>Calendar</h1>
         {days.map((day, index) => 
             <CalendarDay key={index} day={day} session={session} />
         )}
         {isLoading && <p>Loading...</p>}
-    </>;
+    </div>;
 };
 
 export default Calendar;
