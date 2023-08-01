@@ -31,6 +31,11 @@ class CalendarDayModel {
         SessionHandler.getInstance().saveSessions();
     }
 
+    public removeUser(userIdx: number): void {
+        this.users = this.users.filter((user) => user !== userIdx)
+            .map((user) => (user > userIdx) ? user - 1 : user);
+    }
+
     protected setDate(date: Date): void {
         this.date = date;
     }

@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import Calendar from './components/calendar/Calendar'
 import SessionHandler from './model/session/SessionHandler';
 import SessionCreation from './components/session/SessionCreation';
-import UserModel from './model/user/UserModel';
 import UserHandler from './components/user/UserHandler';
 
 function App() {
@@ -62,44 +61,11 @@ function App() {
           Sessions
         </button>
         {userIdx !== -1 &&
-          // TODO make this better
           <span>{session.getUsers()[userIdx].getName()}</span>
         }
         <button onClick={() => setSelectingUser(true)} type="button" className="btn btn-primary">
           Change user
         </button>
-        {/* {users.length > 0 &&
-          <select className="form-select" style={{width:"auto"}} aria-label="User selector"
-            value={userIdx}
-            onChange={(e) => {
-              const v = parseInt(e.target.value);
-              setUserIdx(v);
-              if (v === -1)
-                setSelectingUser(true);
-            }}
-          >
-            <option value={-1}>Select user</option>
-            {users.map((user, index) => {
-              return <option key={index} value={index}>{user.getName()}</option>
-            })}
-          </select>
-        } */}
-        {/* <div className="input-group mb-3">
-          <input id='userInput' className="form-control"
-            type="text" placeholder="Add user"
-            aria-label="Add user"
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                addUser();
-              }
-            }}
-          />
-        </div>
-        <button type="button" className="btn btn-primary" onClick={() => {
-          console.debug('Adding user');
-        }}>
-          {users.length === 0 ? 'Add user' : 'Add'}
-        </button> */}
       </nav>
       <Calendar session={session}/>
     </>

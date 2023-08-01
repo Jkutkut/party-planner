@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Session from "../../model/session/Session";
 import UserModel from "../../model/user/UserModel";
 
@@ -9,26 +10,26 @@ interface Props {
 }
 
 const UserHandler = ({session, userIdx, setUserIdx, close}: Props) => {
-  const users = session.getUsers();
+  const [users, setUsers] = useState<UserModel[]>(session.getUsers());
+
   const addUser = () => {
     const userInput = document.getElementById('userInput') as HTMLInputElement;
     const username = userInput.value.trim();
+    userInput.classList.remove('is-invalid');
+    userInput.classList.remove('is-valid');
     if (username.length === 0) {
-      alert('User name cannot be empty!');
-      return; // TODO handle this better
+      return;
     }
     if (users.find(user => user.getName() === username)) {
-      alert('User already exists!');
-      return; // TODO handle this better
+      userInput.classList.add('is-invalid');
+      return;
     }
     userInput.value = '';
     userInput.focus();
-
-    const user = new UserModel(username);
-    session.addUser(user);
+    session.addUser(new UserModel(username));
     setUserIdx(session.getUsers().length - 1);
-    
-    // TODO
+    userInput.classList.add('is-valid');
+    setUsers([...session.getUsers()]);
   }
 
   const selectUser = (userIdx: number, callClose: boolean = true) => {
@@ -38,40 +39,44 @@ const UserHandler = ({session, userIdx, setUserIdx, close}: Props) => {
   }
 
   const removeUsr = (userIndex: number) => {
-    // TODO
-    console.warn("TODO: remove user");
+    session.removeUser(userIndex);
+    setUserIdx(session.getCurrentUserIdx());
+    setUsers([...session.getUsers()]);
   }
 
   return (<>
-    <button onClick={close} type="button" className="btn-close" aria-label="Close"/>
-    <br /><br />
+    <div className="d-flex justify-content-end">
+      <button onClick={close} type="button" className="btn-close" aria-label="Close"/>
+    </div>
     <h3>Add User:</h3>
     <div className="input-group mb-3">
-      <span className="input-group-text" id="addUsrText">Username</span>
       <input id="userInput" type="text" className="form-control"
-        placeholder="" aria-label="Username" aria-describedby="addUsrText"
+        placeholder="Username" aria-label="Username" aria-describedby="addUsrText"
         onKeyDown={(e) => {
           if (e.key === 'Enter') addUser();
         }}
       />
+      <button type="button" className="btn btn-primary" onClick={addUser}>Add</button>
+      <div className="valid-feedback">User added successfully!</div>
+      <div className="invalid-feedback">User already exists!</div>
     </div>
-    <button type="button" className="btn btn-primary" onClick={addUser}>Add</button>
-    <br /><br />
     <h3>Users:</h3>
     <div className='container text-center'>
       {users.map((user, index) =>
-        <div key={index} className="container text-center">
-          <div className="row">
-            <div className="col">
-              <button type="button" className="btn btn-primary" onClick={() => selectUser(index)}>
-                Select
+        <div key={index} className="card" style={{marginTop: '0.5rem'}}>
+          <div className="row align-items-center">
+            <div className="col-4 text-start">
+              <button type="button" className="btn btn-primary form-control" onClick={() => selectUser(index)}>
+                {userIdx === index ? 'Selected' : 'Select'}
               </button>
             </div>
             <div className="col">
-              <span>{user.getName()}</span>
+              <span>{userIdx === index ? <b>{user.getName()}</b> : user.getName()}</span>
             </div>
-            <div className="col">
-              <button type="button" className="btn-close" aria-label="Close" onClick={() => removeUsr(index)}></button>
+            <div className="col-2">
+              <button type="button" className="btn-close" aria-label="Close"
+                onClick={() => removeUsr(index)} {...{disabled: userIdx === index}}
+              ></button>
             </div>
           </div>
         </div>

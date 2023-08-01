@@ -71,6 +71,10 @@ class CalendarModel extends Model {
         return this.startDate;
     }
 
+    public removeUser(userIdx: number): void {
+        this.days.forEach((day: CalendarDayModel) => day.removeUser(userIdx));
+    }
+
     // -----------------------------
 
     public toJSON(): any {

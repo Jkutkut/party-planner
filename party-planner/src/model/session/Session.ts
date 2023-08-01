@@ -48,6 +48,18 @@ class Session extends Model {
         SessionHandler.getInstance().saveSessions();
     }
 
+    public removeUser(userIdx: number): void {
+        // ! Not doing input validation
+        this.getCalendar().removeUser(userIdx);
+        this.users = [...this.users.slice(0, userIdx), ...this.users.slice(userIdx + 1)]
+        if (userIdx === this.currentUserIdx)
+            this.currentUserIdx = -1;
+        else if (userIdx < this.currentUserIdx)
+            this.currentUserIdx--;
+        SessionHandler.getInstance().saveSessions();
+    }
+
+
     // -------------------------
 
     public getName(): string {
