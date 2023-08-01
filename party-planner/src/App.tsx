@@ -39,37 +39,35 @@ function App() {
     setSession(null);
   };
 
-
   // ---------------------------------------
-  
 
   if (selectingUser) {
-    return <UserHandler
-      session={session}
-      userIdx={userIdx}
-      setUserIdx={changeUserIdx}
-      close={() => setSelectingUser(false)}
-    />;
+    return (
+      <UserHandler
+        session={session}
+        userIdx={userIdx}
+        setUserIdx={changeUserIdx}
+        close={() => setSelectingUser(false)}
+      />
+    );
   }
 
-  return (
-    <>
-      <nav className="navbar sticky-top" style={{background: "var(--bs-body-bg)"}}>
-        <button className='btn btn-outline-primary me-2'
-          type='button' onClick={selectSession}
-        >
-          Sessions
-        </button>
-        {userIdx !== -1 &&
-          <span>{session.getUsers()[userIdx].getName()}</span>
-        }
-        <button onClick={() => setSelectingUser(true)} type="button" className="btn btn-primary">
-          Change user
-        </button>
-      </nav>
-      <Calendar session={session}/>
-    </>
-  )
+  return <>
+    <nav className="navbar sticky-top" style={{background: "var(--bs-body-bg)"}}>
+      <button className='btn btn-outline-primary me-2'
+        type='button' onClick={selectSession}
+      >
+        Sessions
+      </button>
+      {userIdx !== -1 &&
+        <span>{session.getUsers()[userIdx].getName()}</span>
+      }
+      <button onClick={() => setSelectingUser(true)} type="button" className="btn btn-primary">
+        Change user
+      </button>
+    </nav>
+    <Calendar session={session}/>
+  </>;
 }
 
 export default App

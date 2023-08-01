@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Session from "../../model/session/Session";
 import UserModel from "../../model/user/UserModel";
+import User from "./User";
+import AddUser from "./AddUser";
 
 interface Props {
   session: Session;
@@ -49,37 +51,16 @@ const UserHandler = ({session, userIdx, setUserIdx, close}: Props) => {
       <button onClick={close} type="button" className="btn-close" aria-label="Close"/>
     </div>
     <h3>Add User:</h3>
-    <div className="input-group mb-3">
-      <input id="userInput" type="text" className="form-control"
-        placeholder="Username" aria-label="Username" aria-describedby="addUsrText"
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') addUser();
-        }}
-      />
-      <button type="button" className="btn btn-primary" onClick={addUser}>Add</button>
-      <div className="valid-feedback">User added successfully!</div>
-      <div className="invalid-feedback">User already exists!</div>
-    </div>
+    <AddUser inputId="userInput" ftAddUser={addUser} />
     <h3>Users:</h3>
     <div className='container text-center'>
       {users.map((user, index) =>
-        <div key={index} className="card" style={{marginTop: '0.5rem'}}>
-          <div className="row align-items-center">
-            <div className="col-4 text-start">
-              <button type="button" className="btn btn-primary form-control" onClick={() => selectUser(index)}>
-                {userIdx === index ? 'Selected' : 'Select'}
-              </button>
-            </div>
-            <div className="col">
-              <span>{userIdx === index ? <b>{user.getName()}</b> : user.getName()}</span>
-            </div>
-            <div className="col-2">
-              <button type="button" className="btn-close" aria-label="Close"
-                onClick={() => removeUsr(index)} {...{disabled: userIdx === index}}
-              ></button>
-            </div>
-          </div>
-        </div>
+        <User key={index}
+          user={user}
+          isCurrentUser={userIdx === index}
+          ftSelectUser={() => selectUser(index)}
+          ftRemoveUser={() => removeUsr(index)}
+        />
       )}
     </div>
   </>);
